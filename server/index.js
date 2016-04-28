@@ -32,6 +32,20 @@ app.put('/api/v1/students/:id', (req, res, next) => {
     students.update(student).then((result) => res.json(result));
 });
 
+// добавление и обновление нескольких студентов (используется для синхронизации после работы клиента в оффлайн)
+app.put('/api/v1/putstudents', (req, res, next) => {
+    const addedStudents = req.body.added;
+    const modifiedStudents = req.body.modified;
+    console.log('PUT /api/v1/putstudents', addedStudents, modifiedStudents);    
+    addedStudents.forEach(function (addedStudent){
+        students.add(addedStudent);
+    });
+    modifiedStudents.forEach(function (modifiedStudent){
+        students.update(modifiedStudent);
+    });
+    return res.json(students);
+});
+
 app.listen(8080, () => {
     console.log('Server listening on port 8080!');
 });

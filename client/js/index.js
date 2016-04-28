@@ -83,6 +83,9 @@ function onStudentSaveClick(e) {
             studentsContainer.insertBefore(newStudentContainer, studentContainer);
             studentsContainer.removeChild(studentContainer);
         })
+        .catch((e) => {})   // при возврате некорректного ответа при обновлении студентов в оффлайн, перезагружаем список студентов из кэша
+        .then(getStudents)
+        .then(updateStudentsList)
         .catch((e) => {
             if (!(e instanceof ValidationError)) {
                 console.error(e);
